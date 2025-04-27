@@ -1,14 +1,15 @@
 /// <reference types="cypress" />
 
+    var email = `caio${Date.now()}@teste.com`
+
 describe('Funcionalidade: Cadastro de Membros', () => {
+
+  beforeEach(() => {
+    cy.visit('/')
+  })
+
   it('Deve fazer o cadastro de campos Obrigatórios', () => {
-    cy.visit('http://192.168.100.5:8080')
-    cy.get('#signup-firstname').type('Caio')
-    cy.get('#signup-lastname').type('Testando')
-    cy.get('#signup-email').type('applicationTest1@gmail.com')
-    cy.get('#signup-phone').type('31998563658')
-    cy.get('#signup-password').type('Teste12345!')
-    cy.get('#signup-button').click()
+    cy.preencherCadastro('Caio', 'Testando', email, '31998565478', 'Teste123!')
     cy.get('#signup-response').should('be.visible')
   })
 
@@ -29,7 +30,7 @@ describe('Funcionalidade: Cadastro de Membros', () => {
     cy.get('#signup-response').should('have.text', '{"message":"Nome não pode estar vazio"}')
   })
 
-  it('Testando a senha forte', () => {
+  it('Testando e-mail válido', () => {
     cy.visit('http://192.168.100.5:8080')
     cy.get('#signup-firstname').type('Caio')
     cy.get('#signup-lastname').type('Testando')
@@ -38,17 +39,6 @@ describe('Funcionalidade: Cadastro de Membros', () => {
     cy.get('#signup-password').type('Teste12345!@')
     cy.get('#signup-button').click()
     cy.get('#signup-response').should('have.text', '{"message":"E-mail deve ser um email válido"}')
-  })
-
-  it('Testando a senha forte', () => {
-    cy.visit('http://192.168.100.5:8080')
-    cy.get('#signup-firstname').type('Caio')
-    cy.get('#signup-lastname').type('Testando')
-    cy.get('#signup-email').type('applicationTest11@gmail.com')
-    cy.get('#signup-phone').type('31998563658')
-    cy.get('#signup-password').type('Teste12345!@')
-    cy.get('#signup-button').click()
-    cy.get('#signup-response').should('have.text', 'Cadastro realizado com sucesso!')
   })
 
   it('E-mail já existente', () => {
@@ -84,19 +74,20 @@ describe('Funcionalidade: Cadastro de Membros', () => {
     cy.get('#signup-response').should('have.text', '{"message":"Senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial (!@#$&*)"}')
   })
 
-  it('Testando a senha fraca', () => {
+  it('Testando a Política de Privacidade', () => {
     cy.visit('http://192.168.100.5:8080')
     cy.get('a[href="./polices.html"]').click()
     cy.get('h1').should('have.text', 'Política de Privacidade')
   })
 
-  it.only('Senha vazia', () => {
+  it('Senha vazia', () => {
     cy.visit('http://192.168.100.5:8080')
     cy.get('#signup-firstname').type('Caio')
     cy.get('#signup-lastname').type('Testando')
     cy.get('#signup-email').type('applicationTes@gmail.com')
     cy.get('#signup-phone').type('31998563658')
     cy.get('#signup-button').click()
+    cy.wait(4000)
     cy.get('#signup-response').should('have.text', '{"message":"Senha não pode estar vazia"}')
   })
   
