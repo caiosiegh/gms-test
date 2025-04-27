@@ -5,7 +5,7 @@ describe('Funcionalidade: Filmes', () => {
       cy.visit('http://192.168.100.5:8080')
       cy.get('#search-input').type('Jurassic')
       cy.get('#search-button').click()
-      cy.get('#results-section').should('be.visible')
+      cy.get('#results-section').should('contain.text', "Jurassic")
     })
 
     it('Buscar Filme sem resultado', () => {
