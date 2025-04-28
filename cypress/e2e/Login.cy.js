@@ -72,11 +72,11 @@ describe('Funcionalidade: Cadastro de Membros', () => {
     cy.get('#signup-response').should('have.text', '{"message":"Senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial (!@#$&*)"}')
   })
 
-  it('Testando a Política de Privacidade', () => {
-    cy.get('a').click()
-    cy.wait(4000)
-    cy.title().should('have.text', 'Política de Privacidade - Golden Movie Studio')
-  })
+  it.only('Testando a Política de Privacidade', () => {
+      cy.contains('Política de Privacidade').click()
+      cy.url().should('include', '/polices.html')
+      cy.title().should('eq', 'Política de Privacidade - Golden Movie Studio')
+    })
 
   it('Senha vazia', () => {
     cy.get('#signup-firstname').type('Caio')
